@@ -1,9 +1,17 @@
 import express, { Request, Response } from "express";
 const postgres = require("postgres");
+const cors = require("cors");
 require("dotenv").config();
 
 const app = express();
 const port = 3000;
+
+const corsOptions = {
+  origin: ["http://localhost:3000", "https://example.com"],
+  optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+};
+
+app.use(cors(corsOptions));
 
 const { PGHOST, PGDATABASE, PGUSER, PGPASSWORD, ENDPOINT_ID } = process.env;
 const URL = `postgres://${PGUSER}:${PGPASSWORD}@${PGHOST}/${PGDATABASE}?options=project%3D${ENDPOINT_ID}`;
