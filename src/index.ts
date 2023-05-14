@@ -28,6 +28,23 @@ app.get("/actor/:name", async (req: Request, res: Response) => {
   }
 });
 
+// return candidates
+app.get("/search/actor/:name", async (req: Request, res: Response) => {
+  const name: string = req.params.name;
+  try {
+    const names = await sql`SELECT DISTINCT people.name  
+    FROM people 
+    JOIN stars ON people.id = stars.person_id  
+    WHERE people.name ILIKE '%' || ${name} || '%'
+    ORDER BY people.name ASC
+    LIMIT 10;`;
+    res.json(names);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 app.get("/director/:name", async (req: Request, res: Response) => {
   const name: string = req.params.name;
   console.log(name);
@@ -42,6 +59,23 @@ app.get("/director/:name", async (req: Request, res: Response) => {
     ORDER BY movies.year ASC, movies.title ASC;`;
     console.log(reviews);
     res.json(reviews);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+// return candidates
+app.get("/search/director/:name", async (req: Request, res: Response) => {
+  const name: string = req.params.name;
+  try {
+    const names = await sql`SELECT DISTINCT people.name  
+    FROM people 
+    JOIN directors ON people.id = directors.person_id  
+    WHERE people.name ILIKE '%' || ${name} || '%'
+    ORDER BY people.name ASC
+    LIMIT 10;`;
+    res.json(names);
   } catch (error) {
     console.error(error);
     res.status(500).send("Internal Server Error");
