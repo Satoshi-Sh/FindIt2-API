@@ -45,7 +45,7 @@ app.get("/search/actor/:name", async (req: Request, res: Response) => {
     JOIN stars ON people.id = stars.person_id  
     WHERE people.name ILIKE '%' || ${name} || '%'
     ORDER BY people.name ASC
-    LIMIT 10;`;
+    LIMIT 20;`;
     res.json(names);
   } catch (error) {
     console.error(error);
@@ -73,7 +73,7 @@ app.get("/director/:name", async (req: Request, res: Response) => {
   }
 });
 
-// return candidates
+// return director candidates
 app.get("/search/director/:name", async (req: Request, res: Response) => {
   const name: string = req.params.name;
   try {
@@ -82,7 +82,22 @@ app.get("/search/director/:name", async (req: Request, res: Response) => {
     JOIN directors ON people.id = directors.person_id  
     WHERE people.name ILIKE '%' || ${name} || '%'
     ORDER BY people.name ASC
-    LIMIT 10;`;
+    LIMIT 20;`;
+    res.json(names);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+// return movie title candidates
+app.get("/search/movie/:name", async (req: Request, res: Response) => {
+  const name: string = req.params.name;
+  try {
+    const names = await sql`SELECT DISTINCT movies.title  
+    FROM movies  
+    WHERE movies.title ILIKE '%' || ${name} || '%'
+    LIMIT 20;`;
     res.json(names);
   } catch (error) {
     console.error(error);
