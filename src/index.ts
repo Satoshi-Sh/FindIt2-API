@@ -4,7 +4,7 @@ const cors = require("cors");
 require("dotenv").config();
 
 const app = express();
-const port = 3000;
+const port = 3050;
 
 const corsOptions = {
   origin: ["http://localhost:3000", "https://example.com"],
