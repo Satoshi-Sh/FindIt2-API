@@ -98,7 +98,7 @@ app.get("/search/movie/:name", async (req: Request, res: Response) => {
     JOIN ratings ON movies.id = ratings.movie_id
     WHERE movies.title ILIKE '%' || ${name} || '%'
     ORDER BY movies.year
-    LIMIT 20;`;
+    LIMIT 50;`;
     res.json(data);
   } catch (error) {
     console.error(error);
